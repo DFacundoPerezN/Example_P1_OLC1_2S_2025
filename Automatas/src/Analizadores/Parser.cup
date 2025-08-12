@@ -1,0 +1,45 @@
+/* 1. Package e importaciones */
+package Analizadores; 
+import java_cup.runtime.*;
+
+
+// 2. Codigo para el parser, variables, metodos 
+parser code 
+{:
+    //Clases, objetos, variables, lista, etc... en sintaxis java
+    //Map<String, Estrategia> mapaEstrategias = new HashMap<>();
+:} 
+
+// 3. Terminales 
+terminal String ID;
+terminal PR_N;
+terminal LLAV_IZQ, LLAV_DER;
+terminal PT_COMA, COMA;
+terminal IGUAL;
+
+// 4. No Terminales
+non terminal ini, entradas;
+non terminal def_estados;
+non terminal String list_estados;
+
+// 5. Precedencias
+//precedence right NOT; 
+precedence left COMA;
+
+// 6. Producciones
+start with ini; 
+
+ini ::= entradas
+;
+
+entradas ::= def_estados
+;
+
+def_estados ::= PR_N IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados: " + list); :}
+;
+
+list_estados ::= list_estados:list COMA ID:b {: RESULT = list + ", " + b; :}
+    | ID:a {: RESULT = a; :}
+;
+
+
