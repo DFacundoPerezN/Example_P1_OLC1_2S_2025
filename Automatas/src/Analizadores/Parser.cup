@@ -1,26 +1,32 @@
 /* 1. Package e importaciones */
 package Analizadores; 
 import java_cup.runtime.*;
+import Clases.AFD;
 
 
 // 2. Codigo para el parser, variables, metodos 
 parser code 
 {:
     //Clases, objetos, variables, lista, etc... en sintaxis java
-    //Map<String, Estrategia> mapaEstrategias = new HashMap<>();
+    //Map<String, Automata> mapaAutomatas = new HashMap<>();
 :} 
 
 // 3. Terminales 
 terminal String ID;
-terminal PR_N;
+terminal PR_N,  PR_T,  PR_I,  PR_A;
 terminal LLAV_IZQ, LLAV_DER;
 terminal PT_COMA, COMA;
 terminal IGUAL;
+terminal CHAR;
+terminal ESTADO;
+terminal FLECHA, VERTICAL;
 
 // 4. No Terminales
 non terminal ini, entradas;
-non terminal def_estados;
+non terminal def_estados, def_acepta;
 non terminal String list_estados;
+non terminal def_alfa, list_char;
+non terminal def_inicial;
 
 // 5. Precedencias
 //precedence right NOT; 
@@ -32,14 +38,25 @@ start with ini;
 ini ::= entradas
 ;
 
-entradas ::= def_estados
+entradas ::= def_estados def_alfa def_inicial def_acepta {: //Clases.AFD afd = new Clases.AFD(); :}
 ;
 
 def_estados ::= PR_N IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados: " + list); :}
 ;
 
-list_estados ::= list_estados:list COMA ID:b {: RESULT = list + ", " + b; :}
-    | ID:a {: RESULT = a; :}
+list_estados ::= list_estados:list COMA ESTADO:b {: RESULT = list + ", " + b; :}
+    | ESTADO:a {: RESULT =  (String)a; :}
 ;
 
+def_alfa ::= PR_T IGUAL LLAV_IZQ list_char LLAV_DER PT_COMA 
+;
 
+list_char ::= list_char:list COMA CHAR:b {: RESULT = list + ", " + b; :}
+    | CHAR:a {: RESULT =a; :}
+;
+
+def_inicial ::= PR_I IGUAL LLAV_IZQ ESTADO:e LLAV_DER PT_COMA 
+;
+
+def_acepta ::= PR_A IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados de aceptacion: " + list); :}
+;

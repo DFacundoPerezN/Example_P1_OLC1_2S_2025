@@ -18,8 +18,12 @@ public class Automatas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String estados = " N = {S, A, B, C};";
-        Analizadores.Scanner lexico  = new Analizadores.Scanner(new BufferedReader( new StringReader(estados)));
+        String estados = "N = {S, Q, B, C};";
+        String alfa = "T = {0, 1};";
+        String inicial = " I = {S}; ";
+        String acep = "A = {B,C};";
+        String afd = estados + alfa + inicial + acep;
+        Analizadores.Scanner lexico  = new Analizadores.Scanner(new BufferedReader( new StringReader(afd)));
         Parser sintactico =new Parser(lexico);
         
         String consola;

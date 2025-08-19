@@ -43,11 +43,22 @@ COMMENT_1LINE = "//" .* [^\n] \n
 NUM = [0-9]+
 BLANCOS=[ \r\t]+
 ID =  [a-zA-Z][a-zA-Z_0-9]*
+CHAR = [a-z_0-9]
+Estado = [A-Z]
 
 //Palabras reservadas
 %%
 "N" {    
     return new Symbol(sym.PR_N,yyline,yychar,yytext());
+}
+"T" {    
+    return new Symbol(sym.PR_T,yyline,yychar,yytext());
+}
+"I" {    
+    return new Symbol(sym.PR_I,yyline,yychar,yytext());
+}
+"A" {    
+    return new Symbol(sym.PR_A,yyline,yychar,yytext());
 }
 
 //Simbolos
@@ -74,6 +85,12 @@ ID =  [a-zA-Z][a-zA-Z_0-9]*
 {BLANCOS} {}
 {COMMENT_1LINE} {}
 //{COMMENTMULTI} {}
+{CHAR} {
+    return new Symbol(sym.CHAR,yyline,yychar, yytext());
+} 
+{Estado} {
+    return new Symbol(sym.ESTADO,yyline,yychar, yytext());
+} 
 {ID} {
     //lexemas.add( new Lexema(yytext(),"Boolean",yyline,yychar));
     //System.out.println("Este es un ID: "+yytext()+ ", en la linea: "+yyline+", en la columna: "+yychar);

@@ -8,25 +8,39 @@ package Analizadores;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int PT_COMA = 6;
-  public static final int COMA = 7;
-  public static final int LLAV_IZQ = 4;
-  public static final int LLAV_DER = 5;
+  public static final int PT_COMA = 9;
+  public static final int COMA = 10;
+  public static final int PR_A = 6;
+  public static final int LLAV_IZQ = 7;
+  public static final int PR_T = 4;
+  public static final int LLAV_DER = 8;
+  public static final int FLECHA = 14;
+  public static final int VERTICAL = 15;
   public static final int EOF = 0;
   public static final int PR_N = 3;
   public static final int ID = 2;
-  public static final int IGUAL = 8;
+  public static final int IGUAL = 11;
   public static final int error = 1;
+  public static final int PR_I = 5;
+  public static final int ESTADO = 13;
+  public static final int CHAR = 12;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "ID",
   "PR_N",
+  "PR_T",
+  "PR_I",
+  "PR_A",
   "LLAV_IZQ",
   "LLAV_DER",
   "PT_COMA",
   "COMA",
-  "IGUAL"
+  "IGUAL",
+  "CHAR",
+  "ESTADO",
+  "FLECHA",
+  "VERTICAL"
   };
 }
 
