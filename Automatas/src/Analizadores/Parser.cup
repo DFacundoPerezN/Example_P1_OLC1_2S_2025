@@ -2,13 +2,18 @@
 package Analizadores; 
 import java_cup.runtime.*;
 import Clases.AFD;
+import Clases.Automata;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 
 // 2. Codigo para el parser, variables, metodos 
 parser code 
 {:
     //Clases, objetos, variables, lista, etc... en sintaxis java
-    //Map<String, Automata> mapaAutomatas = new HashMap<>();
+    Map<String, Automata> mapaAutomatas = new HashMap<>();
 :} 
 
 // 3. Terminales 
@@ -17,16 +22,22 @@ terminal PR_N,  PR_T,  PR_I,  PR_A;
 terminal LLAV_IZQ, LLAV_DER;
 terminal PT_COMA, COMA;
 terminal IGUAL;
-terminal CHAR;
-terminal ESTADO;
+terminal String CHAR;
+terminal String ESTADO;
 terminal FLECHA, VERTICAL;
+terminal PR_TRANSI, DOS_PUNTOS;
+terminal OR;
 
 // 4. No Terminales
-non terminal ini, entradas;
+non terminal ini, entradas, instru;
 non terminal def_estados, def_acepta;
-non terminal String list_estados;
+non terminal ArrayList<Character> list_estados;
 non terminal def_alfa, list_char;
 non terminal def_inicial;
+non terminal def_transiciones;
+non terminal ArrayList<Character> list_transiciones;
+non terminal transicion;
+non terminal list_produc, produc;
 
 // 5. Precedencias
 //precedence right NOT; 
@@ -38,25 +49,60 @@ start with ini;
 ini ::= entradas
 ;
 
-entradas ::= def_estados def_alfa def_inicial def_acepta {: //Clases.AFD afd = new Clases.AFD(); :}
+entradas ::= entradas instru 
+        | instru
 ;
 
-def_estados ::= PR_N IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados: " + list); :}
+instru ::= def_estados:es def_alfa:alfa def_inicial:i def_acepta:acep 
+        {: Clases.AFD afd = new Clases.AFD((ArrayList) es, (ArrayList)alfa, (ArrayList) acep,(Character) i,null); //Agregar transiciones
+            //mapaAutomatas.put(identificador, afd);:}
 ;
 
-list_estados ::= list_estados:list COMA ESTADO:b {: RESULT = list + ", " + b; :}
-    | ESTADO:a {: RESULT =  (String)a; :}
+def_estados ::= PR_N IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados: "+list ); :}
 ;
 
-def_alfa ::= PR_T IGUAL LLAV_IZQ list_char LLAV_DER PT_COMA 
+list_estados ::= list_estados:list COMA ESTADO:b {:  ArrayList<Character> lista = (ArrayList<Character>) list;  
+                lista.add(b.charAt(0)); RESULT = lista; :}
+
+    | ESTADO:a {: ArrayList<Character> lista = new ArrayList<Character>(); 
+                lista.add(a.charAt(0)); RESULT = lista; System.out.println(a);:}
 ;
 
-list_char ::= list_char:list COMA CHAR:b {: RESULT = list + ", " + b; :}
-    | CHAR:a {: RESULT =a; :}
+def_alfa ::= PR_T IGUAL LLAV_IZQ list_char:list LLAV_DER PT_COMA {: RESULT = list; :}
 ;
 
-def_inicial ::= PR_I IGUAL LLAV_IZQ ESTADO:e LLAV_DER PT_COMA 
+list_char ::= list_char:list COMA CHAR:b {:  
+                ArrayList<Character> lista = (ArrayList<Character>) list;  
+                lista.add(b.charAt(0)); 
+                RESULT = lista;:}
+
+    | CHAR:a {: ArrayList<Character> lista = new ArrayList<Character>(); 
+                lista.add(a.charAt(0)); 
+                RESULT = lista; :}
 ;
 
-def_acepta ::= PR_A IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados de aceptacion: " + list); :}
+def_inicial ::= PR_I IGUAL LLAV_IZQ ESTADO:e LLAV_DER PT_COMA {: RESULT = e.charAt(0); :}
+;
+
+def_acepta ::= PR_A IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA 
+            {: RESULT= list; :}
+;
+
+/* Esto lo hice despúes de la clase */
+
+def_transiciones ::= PR_TRANSI list_transiciones DOS_PUNTOS 
+;
+
+list_transiciones ::= list_transiciones transicion
+                    | transicion
+;
+
+transicion ::= ESTADO FLECHA list_produc 
+;
+
+list_transiciones ::= list_produc OR produc
+                    | produc
+;
+
+produc ::= CHAR COMA ESTADO 
 ;

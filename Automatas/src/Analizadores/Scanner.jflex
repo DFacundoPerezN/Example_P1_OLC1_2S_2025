@@ -60,7 +60,9 @@ Estado = [A-Z]
 "A" {    
     return new Symbol(sym.PR_A,yyline,yychar,yytext());
 }
-
+"Transiciones" {   
+    return new Symbol(sym.PR_TRANSI,yyline,yychar,yytext());    
+}
 //Simbolos
 "{" {    
     return new Symbol(sym.LLAV_IZQ,yyline,yychar,yytext());
@@ -70,6 +72,9 @@ Estado = [A-Z]
 } 
 "=" {    
     return new Symbol(sym.IGUAL,yyline,yychar,yytext());
+}  
+"|" {    
+    return new Symbol(sym.OR,yyline,yychar,yytext());
 } 
 
 //Signos de puntuacion 
@@ -78,6 +83,9 @@ Estado = [A-Z]
 } 
 ";" {
     return new Symbol(sym.PT_COMA,yyline,yychar,yytext());
+} 
+":" {
+    return new Symbol(sym.DOS_PUNTOS,yyline,yychar,yytext());
 } 
 
 \n {yychar=1 ;} //en cambio de linea reinicia la columna

@@ -4,12 +4,14 @@
  */
 package Clases;
 
+import java.util.List;
+import java.util.ArrayList;
 //Es la clase padre, donde definimos los atributos que usaran las clases hijos
 public class Automata {
-    public char[] estados;
-    public char[] alfabeto;
+    public ArrayList estados;
+    public ArrayList alfabeto;
     
     public char inicial;
-    public char[] aceptados;
-    //public ArrayList<Automata> transiciones;
+    public ArrayList aceptados;
+    public ArrayList<Transicion> transiciones;
 }
