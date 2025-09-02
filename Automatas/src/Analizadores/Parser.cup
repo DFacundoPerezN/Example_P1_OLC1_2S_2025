@@ -38,6 +38,7 @@ non terminal def_transiciones;
 non terminal ArrayList<Character> list_transiciones;
 non terminal transicion;
 non terminal list_produc, produc;
+non terminal String estadoT;
 
 // 5. Precedencias
 //precedence right NOT; 
@@ -61,11 +62,16 @@ instru ::= def_estados:es def_alfa:alfa def_inicial:i def_acepta:acep
 def_estados ::= PR_N IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA {: System.out.println("Listado de estados: "+list ); :}
 ;
 
-list_estados ::= list_estados:list COMA ESTADO:b {:  ArrayList<Character> lista = (ArrayList<Character>) list;  
+list_estados ::= list_estados:list COMA estadoT:b {:  ArrayList<Character> lista = (ArrayList<Character>) list;  
                 lista.add(b.charAt(0)); RESULT = lista; :}
 
-    | ESTADO:a {: ArrayList<Character> lista = new ArrayList<Character>(); 
+    | estadoT:a {: ArrayList<Character> lista = new ArrayList<Character>(); 
                 lista.add(a.charAt(0)); RESULT = lista; System.out.println(a);:}
+;
+
+estadoT ::= ESTADO
+            | PR_N
+            | PR_I
 ;
 
 def_alfa ::= PR_T IGUAL LLAV_IZQ list_char:list LLAV_DER PT_COMA {: RESULT = list; :}
@@ -81,7 +87,7 @@ list_char ::= list_char:list COMA CHAR:b {:
                 RESULT = lista; :}
 ;
 
-def_inicial ::= PR_I IGUAL LLAV_IZQ ESTADO:e LLAV_DER PT_COMA {: RESULT = e.charAt(0); :}
+def_inicial ::= PR_I IGUAL LLAV_IZQ estadoT:e LLAV_DER PT_COMA {: RESULT = e.charAt(0); :}
 ;
 
 def_acepta ::= PR_A IGUAL LLAV_IZQ list_estados:list LLAV_DER PT_COMA 
